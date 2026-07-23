@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECS 2.0 | Revenue Activation Force — Strategic Readout</title>
+  <style>
+    :root {
+      --sf-blue:       #056AFE;
+      --sf-blue-light: #00B3FF;
+      --sf-navy:       #002674;
+      --sf-container:  #0129BF;
+      --sf-sky:        #EBF0FF;
+      --sf-sky-mid:    #C0CEFF;
+      --sf-green:      #276749;
+      --sf-amber:      #B7791F;
+      --sf-red:        #C53030;
+      --sf-neutral-10: #FAFAF9;
+      --sf-neutral-20: #F3F2F2;
+      --sf-neutral-40: #C9C7C5;
+      --sf-neutral-60: #939291;
+      --sf-neutral-80: #514F4D;
+      --sf-neutral-100:#181818;
+      --sf-white:      #FFFFFF;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 4px 16px rgba(2,41,191,.08);
+      --shadow-md: 0 10px 25px rgba(2,41,191,.14);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      background: linear-gradient(
+        to bottom,
+        #001B5E 0%,
+        #002674 6%,
+        #0129BF 18%,
+        #2B6CFF 30%,
+        #7AB5FF 46%,
+        #C8DEFF 58%,
+        #E8F4FF 70%,
+        #F3F8FF 80%,
+        #F8FBFF 88%,
+        #FAFAF9 94%,
+        #FFFFFF 100%
+      );
+    }
+    body {
+      font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: transparent;
+      color: var(--sf-neutral-100);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--sf-navy);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 16px; }
+    .nav-brand svg { height: 28px; width: auto; }
+    .nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,.25); }
+    .nav-brand-text { color: var(--sf-white); font-size: 14px; font-weight: 600; letter-spacing: .02em; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: rgba(255,255,255,.8); text-decoration: none; font-size: 13px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--sf-white); }
+    .mobile-menu-btn { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+    .mobile-menu-btn span { width: 22px; height: 2px; background: white; border-radius: 2px; display: block; transition: transform .25s, opacity .25s; }
+    #mobileNavMenu { display: none; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 32px; }
+    .section { padding: 80px 0; background: rgba(255,255,255,0.88); }
+    .section-alt { background: rgba(255,255,255,0.96); }
+    h1,h2,h3,h4 { line-height: 1.2; }
+    .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sf-blue); margin-bottom: 8px; }
+    .section-divider { width: 48px; height: 4px; border-radius: 2px; background: var(--sf-blue); margin: 0 auto 24px; }
+    .section-header { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+    .section-header h2 { font-size: clamp(28px,3vw,40px); font-weight: 800; color: var(--sf-navy); margin: 8px 0 16px; }
+    .section-header p { font-size: 17px; color: var(--sf-neutral-80); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--sf-navy) 0%, var(--sf-container) 55%, var(--sf-blue) 100%);
+      padding: 96px 0 80px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -60px; right: -80px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,179,255,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 400px; gap: 64px; align-items: center; }
+    .hero-eyebrow { color: var(--sf-blue-light); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(36px,4vw,52px); font-weight: 800; color: var(--sf-white); margin-bottom: 20px; }
+    .hero h1 span { color: var(--sf-blue-light); }
+    .hero-sub { font-size: 18px; color: rgba(255,255,255,.8); margin-bottom: 36px; max-width: 520px; }
+    .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+    .hero-meta-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.7); font-size: 14px; }
+    .hero-scorecard {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(12px); border-radius: var(--radius-lg); padding: 28px;
+    }
+    .scorecard-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 20px; }
+    .scorecard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .scorecard-item { text-align: center; background: rgba(255,255,255,.07); border-radius: var(--radius-md); padding: 16px 8px; }
+    .scorecard-num { font-size: 28px; font-weight: 900; color: var(--sf-white); line-height: 1; }
+    .scorecard-num span { font-size: 16px; font-weight: 700; color: var(--sf-blue-light); }
+    .scorecard-label { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; line-height: 1.3; }
+    .scorecard-divider { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.1); margin: 4px 0; }
+
+    /* ── INTRO BAR ── */
+    .intro-bar { background: var(--sf-container); padding: 20px 0; }
+    .intro-bar-inner { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+    .intro-bar-item { display: flex; align-items: center; gap: 10px; color: var(--sf-white); font-size: 14px; font-weight: 500; }
+    .intro-bar-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sf-blue-light); flex-shrink: 0; }
+
+    /* ── CARDS ── */
+    .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .two-col { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+    .card {
+      background: var(--sf-white); border: 1px solid var(--sf-neutral-20);
+      border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: var(--radius-sm);
+      background: var(--sf-sky); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px; font-size: 22px;
+    }
+    .card-icon.navy { background: var(--sf-navy); }
+    .card-icon.amber { background: #FEFCBF; }
+    .card-icon.red { background: #FED7D7; }
+    .card h3 { font-size: 16px; font-weight: 700; color: var(--sf-navy); margin-bottom: 8px; }
+    .card p { font-size: 13px; color: var(--sf-neutral-80); line-height: 1.6; }
+    .stat-callout { font-size: 36px; font-weight: 900; color: var(--sf-blue); line-height: 1; margin-bottom: 4px; }
+    .stat-callout.red { color: var(--sf-red); }
+    .stat-callout.amber { color: var(--sf-amber); }
+    .stat-callout.green { color: var(--sf-green); }
+    .stat-sub { font-size: 12px; color: var(--sf-neutral-60); margin-bottom: 12px; }
+
+    /* ── STAT BLOCKS ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 40px; }
+    .stat-block { background: var(--sf-sky); border-radius: var(--radius-md); padding: 24px 16px; text-align: center; }
+    .stat-block.accent { background: var(--sf-navy); }
+    .stat-big { font-size: 32px; font-weight: 900; color: var(--sf-navy); line-height: 1; }
+    .stat-big.white { color: var(--sf-white); }
+    .stat-lbl { font-size: 11px; color: var(--sf-neutral-60); margin-top: 6px; line-height: 1.3; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .stat-lbl.white { color: rgba(255,255,255,.7); }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin-bottom: 32px; }
+    table.sf { width: 100%; border-collapse: collapse; font-size: 14px; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+    table.sf th { background: var(--sf-navy); color: var(--sf-white); padding: 13px 16px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+    table.sf td { padding: 14px 16px; border-bottom: 1px solid var(--sf-neutral-20); color: var(--sf-neutral-80); background: var(--sf-white); vertical-align: top; }
+    table.sf tbody tr:hover td { background: var(--sf-sky); }
+    table.sf .total-row td { background: var(--sf-sky) !important; font-weight: 700; color: var(--sf-navy); border-top: 2px solid var(--sf-blue); }
+    .td-strong { font-weight: 700; color: var(--sf-navy); }
+    .td-blue { font-weight: 900; color: var(--sf-blue); font-size: 16px; }
+    .td-green { font-weight: 700; color: var(--sf-green); }
+    .td-amber { font-weight: 700; color: var(--sf-amber); }
+    .td-red { font-weight: 700; color: var(--sf-red); }
+
+    /* ── BADGES ── */
+    .badge { display: inline-block; border-radius: 12px; padding: 2px 10px; font-size: 11px; font-weight: 700; }
+    .badge-blue  { background: var(--sf-sky); color: var(--sf-navy); }
+    .badge-green { background: #D7F0DB; color: #1A5C2A; }
+    .badge-red   { background: #FED7D7; color: #822727; }
+    .badge-amber { background: #FEFCBF; color: #744210; }
+    .badge-new   { background: var(--sf-container); color: var(--sf-white); }
+
+    /* ── AER MOTION ── */
+    .aer-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: 40px; }
+    .aer-col { padding: 36px 28px; }
+    .aer-col.activate { background: var(--sf-navy); }
+    .aer-col.expand   { background: var(--sf-container); }
+    .aer-col.retain   { background: var(--sf-blue); }
+    .aer-letter { font-size: 64px; font-weight: 900; color: rgba(255,255,255,.15); line-height: 1; margin-bottom: -8px; }
+    .aer-word   { font-size: 22px; font-weight: 800; color: var(--sf-white); margin-bottom: 10px; }
+    .aer-def    { font-size: 13px; color: rgba(255,255,255,.75); line-height: 1.6; }
+    .aer-kpi    { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.2); }
+    .aer-kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+    .aer-kpi-item  { font-size: 12px; color: rgba(255,255,255,.85); margin-bottom: 4px; }
+
+    /* ── LEVEL TRACK ── */
+    .track-wrap { display: flex; gap: 0; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: 32px; }
+    .track-level { flex: 1; padding: 28px 20px; position: relative; }
+    .track-level.l85 { background: #F0F4FF; border-right: 1px solid #C0CEFF; }
+    .track-level.l86 { background: #E0EAFF; border-right: 1px solid #C0CEFF; }
+    .track-level.l87 { background: var(--sf-container); border-right: 1px solid rgba(255,255,255,.2); }
+    .track-level.l88 { background: var(--sf-navy); }
+    .track-badge { display: inline-block; background: rgba(0,0,0,.15); color: var(--sf-white); border-radius: 8px; padding: 3px 10px; font-size: 11px; font-weight: 800; letter-spacing: .06em; margin-bottom: 10px; }
+    .track-badge.dark { background: rgba(1,41,191,.2); color: var(--sf-navy); }
+    .track-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+    .track-level.l85 .track-title,
+    .track-level.l86 .track-title { color: var(--sf-navy); }
+    .track-level.l87 .track-title,
+    .track-level.l88 .track-title { color: var(--sf-white); }
+    .track-ceiling { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+    .track-level.l85 .track-ceiling,
+    .track-level.l86 .track-ceiling { color: var(--sf-blue); }
+    .track-level.l87 .track-ceiling,
+    .track-level.l88 .track-ceiling { color: var(--sf-blue-light); }
+    .track-item { font-size: 12px; margin-bottom: 4px; padding-left: 14px; position: relative; }
+    .track-item::before { content: '›'; position: absolute; left: 0; font-weight: 700; }
+    .track-level.l85 .track-item,
+    .track-level.l86 .track-item { color: var(--sf-neutral-80); }
+    .track-level.l87 .track-item,
+    .track-level.l88 .track-item { color: rgba(255,255,255,.8); }
+    .track-otenote { font-size: 11px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,.1); }
+    .track-level.l87 .track-otenote,
+    .track-level.l88 .track-otenote { border-top-color: rgba(255,255,255,.2); color: rgba(255,255,255,.7); }
+    .track-level.l85 .track-otenote,
+    .track-level.l86 .track-otenote { color: var(--sf-neutral-60); }
+    .track-arrow { position: absolute; right: -14px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; background: var(--sf-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 900; z-index: 2; }
+    .track-level.l88 .track-arrow { display: none; }
+
+    /* ── MATH STEPS ── */
+    .math-steps { display: flex; flex-direction: column; }
+    .math-step { display: flex; align-items: flex-start; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--sf-neutral-20); }
+    .math-step:last-child { border-bottom: none; }
+    .math-num { width: 44px; height: 44px; border-radius: 50%; background: var(--sf-navy); color: var(--sf-white); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; flex-shrink: 0; margin-top: 2px; }
+    .math-body { flex: 1; }
+    .math-title { font-size: 16px; font-weight: 700; color: var(--sf-navy); margin-bottom: 6px; }
+    .math-desc { font-size: 14px; color: var(--sf-neutral-80); line-height: 1.6; }
+    .math-result { font-size: 24px; font-weight: 900; line-height: 1; margin-top: 10px; color: var(--sf-blue); }
+    .math-result.red { color: var(--sf-red); }
+    .math-result.green { color: var(--sf-green); }
+    .math-result.amber { color: var(--sf-amber); }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: var(--sf-sky-mid); }
+    .tl-item { position: relative; margin-bottom: 28px; }
+    .tl-dot { position: absolute; left: -28px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--sf-blue); border: 3px solid var(--sf-white); box-shadow: 0 0 0 2px var(--sf-blue); }
+    .tl-dot.now  { background: var(--sf-amber); box-shadow: 0 0 0 2px var(--sf-amber); width: 20px; height: 20px; left: -30px; }
+    .tl-dot.done { background: var(--sf-green); box-shadow: 0 0 0 2px var(--sf-green); }
+    .tl-date   { font-size: 11px; font-weight: 700; color: var(--sf-neutral-60); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+    .tl-action { font-size: 15px; font-weight: 700; color: var(--sf-navy); }
+    .tl-detail { font-size: 12px; color: var(--sf-neutral-60); margin-top: 2px; line-height: 1.5; }
+    .tl-tag    { font-size: 11px; font-weight: 700; margin-top: 4px; }
+    .tl-tag.now  { color: var(--sf-amber); }
+    .tl-tag.next { color: var(--sf-blue); }
+
+    /* ── URGENCY / ACCENT CARDS ── */
+    .accent-card { background: var(--sf-white); border: 1px solid var(--sf-neutral-20); border-left: 4px solid var(--sf-blue); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); }
+    .accent-card.amber { border-left-color: var(--sf-amber); }
+    .accent-card.red   { border-left-color: var(--sf-red); }
+    .accent-card.green { border-left-color: var(--sf-green); }
+    .accent-card h3 { font-size: 15px; font-weight: 700; color: var(--sf-navy); margin-bottom: 8px; }
+    .accent-card p  { font-size: 13px; color: var(--sf-neutral-80); line-height: 1.6; }
+
+    /* ── INFO BOX ── */
+    .info-box { background: var(--sf-sky); border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 28px; }
+    .info-box p { font-size: 14px; color: var(--sf-navy); line-height: 1.7; }
+    .info-box strong { color: var(--sf-container); }
+    .pullout { background: var(--sf-sky); border-left: 3px solid var(--sf-blue); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 18px; margin: 18px 0; font-size: 15px; color: var(--sf-navy); font-weight: 500; line-height: 1.6; }
+
+    /* ── CTA ── */
+    .cta-section { background: linear-gradient(135deg, var(--sf-container) 0%, var(--sf-navy) 100%); padding: 80px 0; }
+    .cta-inner { text-align: center; max-width: 680px; margin: 0 auto; }
+    .cta-inner h2 { font-size: 36px; font-weight: 800; color: var(--sf-white); margin: 12px 0 16px; }
+    .cta-inner p  { font-size: 17px; color: rgba(255,255,255,.8); margin-bottom: 36px; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-block; border-radius: var(--radius-sm); padding: 13px 28px; font-size: 15px; font-weight: 700; text-decoration: none; cursor: pointer; transition: opacity .2s; }
+    .btn:hover { opacity: .88; }
+    .btn-primary { background: var(--sf-blue); color: var(--sf-white); }
+    .btn-ghost   { background: rgba(255,255,255,.12); color: var(--sf-white); border: 1px solid rgba(255,255,255,.3); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--sf-neutral-20); padding: 32px 0; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-inner p { font-size: 12px; color: var(--sf-neutral-60); }
+
+    /* ── COMPARE PANEL ── */
+    .compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: 40px; }
+    .compare-col { padding: 32px 28px; }
+    .compare-col.old { background: var(--sf-neutral-20); }
+    .compare-col.new { background: var(--sf-navy); }
+    .compare-label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 16px; }
+    .compare-col.old .compare-label { color: var(--sf-neutral-60); }
+    .compare-col.new .compare-label { color: var(--sf-blue-light); }
+    .compare-h { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+    .compare-col.old .compare-h { color: var(--sf-neutral-80); }
+    .compare-col.new .compare-h { color: var(--sf-white); }
+    .compare-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 14px; line-height: 1.5; }
+    .compare-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; margin-top: 2px; }
+    .compare-col.old .compare-icon { background: #FED7D7; color: var(--sf-red); }
+    .compare-col.new .compare-icon { background: rgba(0,179,255,.2); color: var(--sf-blue-light); }
+    .compare-col.old .compare-text { color: var(--sf-neutral-80); }
+    .compare-col.new .compare-text { color: rgba(255,255,255,.85); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-grid, .three-col, .aer-grid, .compare-wrap { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .track-wrap { flex-direction: column; }
+      .track-level { border-right: none; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .track-arrow { display: none; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      nav { padding: 0 20px; }
+      .container { padding: 0 20px; }
+    }
+    /* Nav collapses to hamburger only on mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: flex !important; }
+      #mobileNavMenu { display: block !important; position: fixed; top: 60px; left: 0; right: 0; background: var(--sf-navy); z-index: 99; padding: 8px 0 12px; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: transform .2s, opacity .2s; border-top: 1px solid rgba(255,255,255,.12); }
+      #mobileNavMenu.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+      #mobileNavMenu a { display: block; padding: 14px 24px; color: rgba(255,255,255,.9); text-decoration: none; font-size: 15px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.08); }
+      body { padding-top: 0; }
+    }
+    /* Compact nav links for mid-range viewports */
+    @media (min-width: 769px) and (max-width: 1000px) {
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 11.5px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <div class="nav-brand">
+    <!-- Salesforce cloud logo -->
+    <svg viewBox="0 0 60 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25.1 7.8c2.4-2.5 5.7-4 9.3-4 4.8 0 9 2.6 11.3 6.5.9-.4 1.8-.6 2.8-.6 3.9 0 7 3.2 7 7.1 0 3.9-3.1 7.1-7 7.1H11.5C7.3 23.9 4 20.6 4 16.4c0-4.2 3.3-7.5 7.5-7.5.5 0 1 .1 1.5.2C14.6 5.6 18.7 3 23.4 3c.6 0 1.2 0 1.7.1z" fill="#FFFFFF"/>
+    </svg>
+    <div class="nav-divider"></div>
+    <span class="nav-brand-text">ECS</span>
+    <div class="nav-divider"></div>
+    <span class="nav-brand-text">ECS 2.0 Strategic Readout</span>
+  </div>
+  <div class="nav-links">
+    <a href="#brief">Brief</a>
+    <a href="#diagnosis">Diagnosis</a>
+    <a href="#model">AER Model</a>
+    <a href="#career">Career Track</a>
+    <a href="#dealband">Deal Band</a>
+    <a href="#case">Business Case</a>
+    <a href="#roadmap">Roadmap</a>
+  </div>
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div id="mobileNavMenu">
+  <a href="#brief">Brief</a>
+  <a href="#diagnosis">Diagnosis</a>
+  <a href="#model">AER Model</a>
+  <a href="#career">Career Track</a>
+  <a href="#dealband">Deal Band</a>
+  <a href="#case">Business Case</a>
+  <a href="#roadmap">Roadmap</a>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="brief">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">AMER ECS &nbsp;·&nbsp; Patrick Reid Org &nbsp;·&nbsp; FY27 Strategic Readout &nbsp;·&nbsp; July 2026</div>
+        <h1>ECS Was Built for a<br><span>License Economy.</span><br>We Are Now in a<br><span>Consumption Economy.</span></h1>
+        <p class="hero-sub">The tools, motions, and talent structures that made ECS successful must evolve — or the org will continue to export its best people while leaving tens of millions in unactivated Agentforce and Data Cloud value on the table.</p>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Prepared: July 2026
+          </div>
+          <div class="hero-meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Audience: ECS &amp; REG Leadership
+          </div>
+          <div class="hero-meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            AMER · TMT · CBS · PACE · REG
+          </div>
+        </div>
+      </div>
+      <div class="hero-scorecard">
+        <div class="scorecard-title">ECS AT A GLANCE · FY27</div>
+        <div class="scorecard-grid">
+          <div class="scorecard-item">
+            <div class="scorecard-num">83</div>
+            <div class="scorecard-label">Active ECS AEs · Patrick Reid org</div>
+          </div>
+          <div class="scorecard-divider"></div>
+          <div class="scorecard-item">
+            <div class="scorecard-num" style="color:var(--sf-blue-light)">$150K</div>
+            <div class="scorecard-label">Current AMER deal ceiling</div>
+          </div>
+          <div class="scorecard-item">
+            <div class="scorecard-num" style="color:var(--sf-blue-light)">L6</div>
+            <div class="scorecard-label">Current grade ceiling — no path beyond</div>
+          </div>
+          <div class="scorecard-divider"></div>
+          <div class="scorecard-item" style="grid-column:1/-1; background:rgba(255,60,60,.12)">
+            <div class="scorecard-num" style="color:#FF6B6B; font-size:20px">$0</div>
+            <div class="scorecard-label">Compensation for activating Agentforce / Data Cloud credits across account base</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO BAR -->
+<div class="intro-bar">
+  <div class="container">
+    <div class="intro-bar-inner">
+      <div class="intro-bar-item"><div class="intro-bar-dot"></div> Deal band expands: ceiling moving to $350K+</div>
+      <div class="intro-bar-item"><div class="intro-bar-dot"></div> Consumption economy live — ECS not yet wired to it</div>
+      <div class="intro-bar-item"><div class="intro-bar-dot"></div> Grade ceiling at L6 is an active talent exit ramp</div>
+      <div class="intro-bar-item"><div class="intro-bar-dot"></div> ACV Engineering is the #1 ECS/Field friction source</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ BRIDGE ══════════════════ -->
+<section style="background:rgba(255,255,255,0.80);padding:72px 0 64px;border-bottom:1px solid rgba(0,38,116,0.10)">
+  <div class="container" style="max-width:800px;text-align:center">
+    <div class="eyebrow">The Case for Change</div>
+    <div class="section-divider"></div>
+    <h2 style="font-size:clamp(26px,3.5vw,38px);line-height:1.2;color:var(--sf-navy);margin-bottom:28px">ECS Is Not Broken.<br>Its Architecture Is.</h2>
+    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;margin-bottom:24px">ECS was engineered for a specific job: move fast, close small, and cover the subsidiary ground that Core AEs couldn't. It did that job exceptionally well — and still does. What changed isn't ECS's talent or work ethic. It's the commercial landscape the org now operates inside.</p>
+    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;margin-bottom:24px">Salesforce's portfolio has shifted to consumption. Agentforce and Data Cloud close as credits — and those credits need to be activated to generate the expansion and retention that protects NRR at the board level. The subsidiaries ECS covers are the front line of that activation challenge. But ECS's structure, compensation model, and grade architecture were all designed before that frontier existed.</p>
+    <p style="font-size:19px;font-weight:700;color:var(--sf-navy);margin-bottom:48px;padding:24px 32px;background:#fff;border-radius:12px;border-left:4px solid var(--sf-blue)">This readout names three core tensions — and proposes the structural changes to resolve them.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;text-align:left">
+      <div style="background:#fff;border-radius:12px;padding:24px 20px;border-top:4px solid var(--sf-red)">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sf-red);margin-bottom:10px">Tension 1 · Compensation</div>
+        <div style="font-size:15px;font-weight:700;color:var(--sf-navy);line-height:1.4;margin-bottom:8px">Consumption is live. ECS isn't wired to it.</div>
+        <div style="font-size:13px;color:var(--sf-neutral-80);line-height:1.5">Agentforce and Data Cloud credits go unactivated inside ECS accounts. Zero compensation exists for the team best positioned to change that.</div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:24px 20px;border-top:4px solid var(--sf-amber)">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sf-amber);margin-bottom:10px">Tension 2 · Talent</div>
+        <div style="font-size:15px;font-weight:700;color:var(--sf-navy);line-height:1.4;margin-bottom:8px">ECS grows talent — then exports it.</div>
+        <div style="font-size:13px;color:var(--sf-neutral-80);line-height:1.5">L6 is the end of the road. High performers hit the ceiling, do the math, and leave — taking 3–5 years of account knowledge with them.</div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:24px 20px;border-top:4px solid var(--sf-blue)">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sf-blue);margin-bottom:10px">Tension 3 · Structure</div>
+        <div style="font-size:15px;font-weight:700;color:var(--sf-navy);line-height:1.4;margin-bottom:8px">The deal ceiling creates the friction it was meant to prevent.</div>
+        <div style="font-size:13px;color:var(--sf-neutral-80);line-height:1.5">When the ceiling is below commercial reality, reps split orders and stagger activations — generating the field distrust that damages ECS's reputation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ DIAGNOSIS ══════════════════ -->
+<section class="section" id="diagnosis">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Part 1 · Root Cause Analysis</div>
+      <div class="section-divider"></div>
+      <h2>Four Structural Failures Holding ECS Back</h2>
+      <p>These are not culture problems or leadership problems. They are design problems — and design problems have design solutions.</p>
+    </div>
+
+    <div class="three-col" style="margin-bottom:24px">
+      <div class="card">
+        <div class="card-icon red">💸</div>
+        <div class="stat-callout red">$0</div>
+        <div class="stat-sub">Compensation for consumption activation</div>
+        <h3>Consumption Is Unowned</h3>
+        <p>Salesforce closes Agentforce and Data Cloud deals at scale. The credits sit unused. No team in the current GTM is compensated to activate them at the ECS account tier. ECS AEs are physically inside these accounts and have zero incentive to act.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon amber">🚪</div>
+        <div class="stat-callout amber">L6</div>
+        <div class="stat-sub">Hard ceiling — no path to L7 or L8</div>
+        <h3>Grade Ceiling = Forced Exit</h3>
+        <p>High performers in ECS are making a rational financial calculation: the only path to income growth is leaving the org. ECS trains talent over 2–4 years, then the structural gravity pulls it out. This repeats every cycle.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#FED7D7">⚙️</div>
+        <div class="stat-callout red">ACV<br>Engineering</div>
+        <div class="stat-sub">Split orders, staggered activations, field friction</div>
+        <h3>Deal Band Creates Perverse Incentives</h3>
+        <p>When the deal ceiling is below commercial reality, ECS AEs face a three-way lose: discount the deal to get under the threshold, miss it entirely, or split the order and generate the friction that damages field trust. Meanwhile, Field AEs get pulled into transactional work that should never reach them. The ceiling isn't protecting anyone — it's just creating drag on both sides.</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <div class="stat-callout" style="color:var(--sf-neutral-60)">Paper<br>Pushers</div>
+        <div class="stat-sub">The field's perception of ECS today</div>
+        <h3>Identity &amp; Perception Gap</h3>
+        <p>ECS AEs carry account intimacy, product depth, and executive relationships that rival Core AEs — but are perceived as an execution layer because the structural role supports that perception. This limits collaboration, deal quality, and ECS's ability to drive strategic outcomes.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="stat-callout red">C&amp;C Only</div>
+        <div class="stat-sub">A metric built for a license model</div>
+        <h3>The Wrong Primary Metric</h3>
+        <p>Create &amp; Close velocity was the right measure for a seat/license economy. In a consumption model, the highest-value action an ECS AE can take may not be closing a new BCO — it may be ensuring a previously sold Agentforce deployment actually gets built, protecting the renewal and unlocking expansion.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <div class="section-header" style="margin-bottom:32px">
+        <div class="eyebrow">Before vs. After</div>
+        <div class="section-divider"></div>
+        <h2>ECS 1.0 vs. ECS 2.0</h2>
+      </div>
+      <div class="compare-wrap">
+        <div class="compare-col old">
+          <div class="compare-label">ECS 1.0 — Current State</div>
+          <div class="compare-h">Create &amp; Close Machine</div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">Primary metric: C&amp;C velocity (deal volume, in-quarter close rate)</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">Compensation on new ACV only — no credit for activation or retention</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">Deal ceiling forces ACV Engineering via split orders and staggered activations</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">Grade ceiling at L6 — no growth-in-place path for high performers</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">Account intelligence lives in individual AE heads, unshared, uncredited</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">ECS perceived as a feeder program and deal execution layer</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✕</div>
+            <div class="compare-text">Consumption (Agentforce, Data Cloud) entirely unowned at ECS account tier</div>
+          </div>
+        </div>
+        <div class="compare-col new">
+          <div class="compare-label">ECS 2.0 — Proposed State</div>
+          <div class="compare-h">Revenue Activation Force</div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">Primary metric: AER — Activate, Expand, Retain (revenue quality over volume)</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">Consumption activation bonuses tied to Agentforce / Data Cloud credit burn rates</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">Deal ceiling raised to eliminate ACV Engineering — clean deals, stronger field trust</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">Deep Specialist Track: L5 → L6 → L7 → L8 with defined role expectations and comp growth</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">L8 Principal AEs own formal Account Intelligence function — co-QBR, exec engagement</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">ECS is Salesforce's Consumption Activation Layer — a strategic role, not a feeder</div>
+          </div>
+          <div class="compare-item">
+            <div class="compare-icon">✓</div>
+            <div class="compare-text">ECS owns the "last mile" Agentforce and Data Cloud deployment motion across Enterprise accounts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ AER MODEL ══════════════════ -->
+<section class="section section-alt" id="model">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Part 2 · The New Motion</div>
+      <div class="section-divider"></div>
+      <h2>Replace Create &amp; Close with AER</h2>
+      <p>Activate. Expand. Retain. Three distinct motions that together cover the full revenue lifecycle inside Enterprise accounts — and align ECS directly with where Salesforce's business is going.</p>
+    </div>
+
+    <div class="aer-grid">
+      <div class="aer-col activate">
+        <div class="aer-letter">A</div>
+        <div class="aer-word">Activate</div>
+        <div class="aer-def">Convert purchased but unused Agentforce and Data Cloud credits into live, measurable deployments. ECS AEs own an "Activation Book" — the total unactivated consumption across their account set. This is the consumption activation play Salesforce has no one running today.</div>
+        <div class="aer-kpi">
+          <div class="aer-kpi-label">Key Metrics</div>
+          <div class="aer-kpi-item">› % of credit book at active burn threshold</div>
+          <div class="aer-kpi-item">› # of Agentforce use cases deployed per quarter</div>
+          <div class="aer-kpi-item">› Activation ACV credit (new compensation component)</div>
+        </div>
+      </div>
+      <div class="aer-col expand">
+        <div class="aer-letter">E</div>
+        <div class="aer-word">Expand</div>
+        <div class="aer-def">The evolved BCO motion — identify and close new whitespace across subsidiaries, new divisions, and adjacent products. C&amp;C is retained and elevated within this pillar. Deal ceiling is raised to eliminate ACV Engineering and allow clean, commercial deals at appropriate size.</div>
+        <div class="aer-kpi">
+          <div class="aer-kpi-label">Key Metrics</div>
+          <div class="aer-kpi-item">› BCO ACV (primary attainment, as today)</div>
+          <div class="aer-kpi-item">› Pipeline generation participation rate</div>
+          <div class="aer-kpi-item">› % ECS Own on sourced pipeline</div>
+        </div>
+      </div>
+      <div class="aer-col retain">
+        <div class="aer-letter">R</div>
+        <div class="aer-word">Retain</div>
+        <div class="aer-def">Proactive early engagement on at-risk renewals within the ECS coverage zone. ECS AEs are the first to spot compliance issues, org changes, exec turnover, and budget pressure — often months before Core AEs engage. Formalizing this as a KPI connects ECS to NRR, the metric that matters most to Salesforce leadership.</div>
+        <div class="aer-kpi">
+          <div class="aer-kpi-label">Key Metrics</div>
+          <div class="aer-kpi-item">› NRR contribution score (renewals where ECS engaged early)</div>
+          <div class="aer-kpi-item">› At-risk flags surfaced per quarter</div>
+          <div class="aer-kpi-item">› Renewal save rate on ECS-flagged accounts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Why AER beats C&amp;C:</strong> Create &amp; Close optimizes for deal velocity — which produces short-cycle, small deals and discourages any play that doesn't close in-quarter. AER optimizes for <strong>revenue quality</strong> — activation rate, expansion rate, and NRR contribution. These are the metrics Salesforce leadership reports to Wall Street. Connecting ECS performance to those metrics changes ECS's strategic position in the company.</p>
+    </div>
+
+    <div class="section-header" style="margin-top:64px; margin-bottom:32px">
+      <div class="eyebrow">ECS as Consumption Activation Layer</div>
+      <div class="section-divider"></div>
+      <h2>The Agentforce Last-Mile Problem — and Why ECS Solves It</h2>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-block">
+        <div class="stat-big">$0</div>
+        <div class="stat-lbl">Current incentive to activate Agentforce credits at ECS account tier</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-big" style="color:var(--sf-amber)">Low</div>
+        <div class="stat-lbl">Activation rate — credits sold, deployments lagging across Enterprise accounts</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-big" style="color:var(--sf-red)">0</div>
+        <div class="stat-lbl">Dedicated ECS-tier consumption resources — existing leads stretched across billion-dollar burns</div>
+      </div>
+      <div class="stat-block accent">
+        <div class="stat-big white">ECS</div>
+        <div class="stat-lbl white">Only team already inside these accounts, post-sale, with the relationships to navigate IT/ops orgs</div>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="accent-card">
+        <h3>ECS Consumption Activation (ECA) Program</h3>
+        <p>Each ECS AE is assigned an Activation Book — a live dashboard of all unactivated Agentforce and Data Cloud credits across their accounts. Quarterly compensation is tied to % of book at active burn threshold. Activation milestones unlock a quarterly bonus on top of standard ACV attainment.</p>
+      </div>
+      <div class="accent-card green">
+        <h3>Rapid Deployment Toolkit</h3>
+        <p>Pre-built use case libraries by vertical (HLS HIPAA agents, FINS compliance, CBS member services), a curated ISV partner network for fast stand-up, and connection to a dedicated Agentforce SE pod for accounts above an activation threshold. ECS brings the relationship. The toolkit delivers the first deployment.</p>
+      </div>
+      <div class="accent-card amber">
+        <h3>The Hyperscaler Playbook</h3>
+        <p>AWS and Azure have proven this model: embedding account-intimate reps with a post-sale activation mandate dramatically improves credit burn rates and NRR. Salesforce's ECS org has all the account relationships needed to replicate this. The only missing piece is the compensation structure and toolkit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CAREER TRACK ══════════════════ -->
+<section class="section" id="career">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Part 3 · Career Architecture</div>
+      <div class="section-divider"></div>
+      <h2>The ECS Deep Specialist Track</h2>
+      <p>A legitimate growth-in-place path that rewards account mastery and consumption expertise — not just deal volume. L7 and L8 are not honorary titles. They are structurally different roles with defined expectations, higher compensation, and a clear case for HR approval.</p>
+    </div>
+
+    <div class="track-wrap">
+      <div class="track-level l85">
+        <span class="track-arrow">›</span>
+        <div class="track-badge dark">L5</div>
+        <div class="track-title">ECS Associate AE</div>
+        <div class="track-ceiling">Deal ceiling: $150K AMER</div>
+        <div class="track-item">C&amp;C execution — learning the BCO motion</div>
+        <div class="track-item">Building account maps under mentorship</div>
+        <div class="track-item">MTA cadence and pipeline generation basics</div>
+        <div class="track-item">Shadowing activation plays at L6/L7</div>
+        <div class="track-otenote">Standard L5 OTE — current structure retained</div>
+      </div>
+      <div class="track-level l86">
+        <span class="track-arrow">›</span>
+        <div class="track-badge dark">L6</div>
+        <div class="track-title">ECS Account Executive</div>
+        <div class="track-ceiling">Deal ceiling: $250K AMER</div>
+        <div class="track-item">Full C&amp;C and MTA execution</div>
+        <div class="track-item">Early Activation Book ownership (guided)</div>
+        <div class="track-item">Creative contracting toolkit (QSTs, co-terms)</div>
+        <div class="track-item">AE Scorecard — mandatory above $100K</div>
+        <div class="track-otenote">Standard L6 OTE — current structure retained</div>
+      </div>
+      <div class="track-level l87">
+        <span class="track-arrow">›</span>
+        <div class="track-badge">L7 · NEW</div>
+        <div class="track-title">ECS Senior Account Executive</div>
+        <div class="track-ceiling">Deal ceiling: $350K AMER</div>
+        <div class="track-item">Full AER motion ownership (Activate + Expand + Retain)</div>
+        <div class="track-item">Activation Book ownership with quarterly comp component</div>
+        <div class="track-item">Executive engagement at VP+ level within subsidiaries</div>
+        <div class="track-item">Mentors L5/L6 AEs (informal player-coach)</div>
+        <div class="track-item">NRR contribution tracked and credited</div>
+        <div class="track-otenote">~15–20% OTE increase over L6 · Activation bonus eligible · Deal size expansion unlocks larger deal commission pools</div>
+      </div>
+      <div class="track-level l88">
+        <div class="track-badge">L8 · NEW</div>
+        <div class="track-title">ECS Principal AE / Account Intelligence Officer</div>
+        <div class="track-ceiling">Deal ceiling: $500K+ consumption &amp; strategic expansion</div>
+        <div class="track-item">Full AER motion + formal Account Intelligence function</div>
+        <div class="track-item">Owns live Account Activation Map for Enterprise parent</div>
+        <div class="track-item">Co-presents at exec QBRs with Core AE leadership</div>
+        <div class="track-item">Player-coach for 1–2 junior ECS AEs</div>
+        <div class="track-item">RSU eligibility tied to multi-year activation outcomes</div>
+        <div class="track-otenote">~30–40% OTE increase over L6 · RSU eligible · Compensation structured like a field L7</div>
+      </div>
+    </div>
+
+    <div class="pullout">
+      The talent you retain at L7 and L8 is the talent with 3–5 years of accumulated account knowledge. That knowledge walks out the door when they leave — and cannot be replaced by a new hire in less than 18 months. The financial case for L7/L8 creation is not a compensation ask. It is an account continuity argument.
+    </div>
+
+    <div class="section-header" style="margin-top:64px; margin-bottom:32px">
+      <div class="eyebrow">L8 — The Account Intelligence Officer</div>
+      <div class="section-divider"></div>
+      <h2>What "Account Intelligence" Means in Practice</h2>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-icon">🗺️</div>
+        <h3>Live Account Activation Map</h3>
+        <p>L8 AEs maintain a structured map of each Enterprise parent account: product footprint by subsidiary and BU, activation status of all consumption products, executive contact map, and competitive exposure signals. Refreshed quarterly. Shared with Core AE leadership.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <h3>Exec QBR Co-Presentation</h3>
+        <p>L8 AEs co-present at quarterly business reviews with Core AEs, presenting the subsidiary/consumption view of the account. This positions ECS as a strategic partner — not an execution layer — and builds the executive relationships that protect the account long-term.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h3>Early Warning System</h3>
+        <p>ECS AEs are closest to the day-to-day account footprint — the first to spot at-risk signals months before renewal. L8 AEs formalize this into structured quarterly at-risk reporting to Core AE leadership. Retention saves credited to NRR contribution score.</p>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top:32px">
+      <p><strong>The "paper pusher" narrative dies here.</strong> You cannot paper-push your way to an Account Intelligence briefing that an Enterprise SVP relies on before a QBR. The role change — from deal executor to account intelligence officer — is what changes the field's perception. Not messaging. Not a rebrand. The work itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ DEAL BAND ══════════════════ -->
+<section class="section section-alt" id="dealband">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Part 4 · The ACV Engineering Problem</div>
+      <div class="section-divider"></div>
+      <h2>Deal Band Friction Is the #1 ECS / Field Trust Issue</h2>
+      <p>When deal ceilings are set below the natural commercial size of the account, reps don't stop selling — they engineer around the ceiling. This destroys deal integrity, creates contractual complexity, and poisons the ECS/Field relationship.</p>
+    </div>
+
+    <div class="math-steps">
+      <div class="math-step">
+        <div class="math-num">1</div>
+        <div class="math-body">
+          <div class="math-title">The Account Has a $280K Opportunity</div>
+          <div class="math-desc">A subsidiary needs a platform upgrade + add-on cloud worth $280K ACV. Clean, logical commercial deal. ECS AE identifies it, builds the case, aligns procurement. This is exactly what ECS should be doing.</div>
+          <div class="math-result">$280K natural deal size</div>
+        </div>
+      </div>
+      <div class="math-step">
+        <div class="math-num">2</div>
+        <div class="math-body">
+          <div class="math-title">Old Ceiling Hits — ACV Engineering Begins</div>
+          <div class="math-desc">At $150K (old ceiling), the ECS AE splits the order: Order 1 is $149K, Order 2 is $131K with a staggered activation date. This satisfies the threshold rule on paper while delivering the full commercial value — but at a cost: two order forms, two amendment processes, procurement confusion, and a Core AE who now has a contractual mess in their account.</div>
+          <div class="math-result red">2 order forms · Procurement friction · Field relationship damage</div>
+        </div>
+      </div>
+      <div class="math-step">
+        <div class="math-num">3</div>
+        <div class="math-body">
+          <div class="math-title">The Real Cost of ACV Engineering</div>
+          <div class="math-desc">It is not just a paperwork issue. Split orders require double the Deal Desk touches, double the legal review, and create co-term complexity that haunts the account at renewal. Core AEs who inherit these structures learn to route around ECS. Field trust erodes. The very account intimacy ECS has built is undermined by the structural rule forcing the behavior.</div>
+          <div class="math-result red">Damaged field relationships · Double Deal Desk load · Renewal complexity</div>
+        </div>
+      </div>
+      <div class="math-step">
+        <div class="math-num">4</div>
+        <div class="math-body">
+          <div class="math-title">The Fix: A Meaningful Deal Ceiling Increase</div>
+          <div class="math-desc">Raising the deal ceiling to $350K eliminates the engineering incentive for the vast majority of ECS deals. The AE who owns the account closes the deal — cleanly, as a single order. Most natural commercial opportunities in Enterprise subsidiaries fall below $350K. Deals that genuinely exceed that threshold have earned escalation to Core, which is correct and healthy. As AEs grow into L7 and L8 roles, their individual ceiling grows with them — not as a routing rule, but as a reflection of the account complexity and deal size those roles are built for.</div>
+          <div class="math-result green">One clean order · Less Deal Desk friction · Stronger field partnership</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <div class="table-wrap">
+        <table class="sf">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Old Model ($150K ceiling)</th>
+              <th>New Model ($350K ceiling)</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-strong">$280K subsidiary deal</td>
+              <td>Split into 2 orders ($149K + $131K staggered)</td>
+              <td>Single clean order — ECS AE closes</td>
+              <td class="td-green">1 order form · Clean co-term · Field trust preserved</td>
+            </tr>
+            <tr>
+              <td class="td-strong">$380K consumption + upsell</td>
+              <td>Engineered into 3 fragments across quarters</td>
+              <td>Single activation event — account AE owns it cleanly</td>
+              <td class="td-green">Proper commercial structure · NRR protected · Exec confidence</td>
+            </tr>
+            <tr>
+              <td class="td-strong">$160K platform upgrade</td>
+              <td>ECS must discount to $148K to stay under ceiling — or miss the deal entirely. Field AE gets pulled in to close a $160K transactional deal they shouldn't be touching.</td>
+              <td>ECS closes it clean. No discount, no escalation, no Field involvement needed.</td>
+              <td class="td-green">Full deal value captured · No forced discounts · Field stays focused on transformation</td>
+            </tr>
+            <tr>
+              <td class="td-strong">$600K strategic transformation</td>
+              <td>ECS engineers fragments; Core AE loses deal visibility</td>
+              <td>ECS AE activates what falls within ceiling; escalates the strategic component to Core — clean handoff, clear ownership</td>
+              <td class="td-green">Proper escalation · No engineering · Clear ownership</td>
+            </tr>
+            <tr class="total-row">
+              <td>Net Effect</td>
+              <td class="td-red">ACV Engineering, field friction, Deal Desk overload</td>
+              <td class="td-green">Clean deals, right-sized to natural commercial opportunity</td>
+              <td class="td-blue">Structural fix — not a patch</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="three-col" style="margin-top:8px">
+      <div class="accent-card red">
+        <h3>Why the Current Ceiling Breaks Field Trust</h3>
+        <p>Core AEs see split order forms and staggered activations and correctly identify them as structural workarounds. Worse — they get pulled into $160K transactional deals they shouldn't be anywhere near. Field AEs should be driving transformation. Every minute spent on a transactional escalation is time not spent on the $5M strategic opportunity in the same parent account.</p>
+      </div>
+      <div class="accent-card amber">
+        <h3>$350K Is the Baseline, Not a Stretch Goal</h3>
+        <p>The natural commercial size of most ECS subsidiary deals — platform upgrades, consumption expansions, renewal uplifts — clusters between $150K and $350K. The current $150K ceiling doesn't sit below that range. It sits in the middle of it. $350K isn't an aggressive ask. It's the ceiling that reflects commercial reality.</p>
+      </div>
+      <div class="accent-card green">
+        <h3>Ceiling + Grade Architecture = Clean Ownership</h3>
+        <p>As AEs grow into L7 and L8 roles, their ceiling grows with them — reflecting the account complexity those roles are built for. An L7 owns their accounts fully up to $350K. An L8 up to $500K+. Escalation to Core happens when a deal genuinely exceeds what ECS should own — not because an arbitrary ceiling forces engineering at $150K.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ BUSINESS CASE ══════════════════ -->
+<section class="section" id="case">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Part 5 · The Business Case</div>
+      <div class="section-divider"></div>
+      <h2>The Cost of Inaction Is Not Gradual — It Is Compounding</h2>
+      <p>Three quantifiable levers. Each one independently justifies the investment. Together, they make the case that ECS 2.0 is not a compensation negotiation — it is a revenue transformation.</p>
+    </div>
+
+    <div class="math-steps">
+      <div class="math-step">
+        <div class="math-num">1</div>
+        <div class="math-body">
+          <div class="math-title">Lever 1: Agentforce / Data Cloud Activation Revenue</div>
+          <div class="math-desc">Salesforce is closing Agentforce deals across AMER Enterprise accounts. A meaningful portion of those credits are unactivated at the ECS account tier. ECS AEs are inside these accounts and currently have zero incentive to change that. Even a modest improvement in activation rate — from unactivated to burning — across the ECS account base protects NRR on each of those deals and unlocks consumption expansion. The activation gap is a direct line to incremental ARR that the current model leaves on the table.</div>
+          <div class="math-result green">NRR protection + consumption expansion ACV = new revenue line for ECS</div>
+        </div>
+      </div>
+      <div class="math-step">
+        <div class="math-num">2</div>
+        <div class="math-body">
+          <div class="math-title">Lever 2: Senior ECS AE Attrition Cost</div>
+          <div class="math-desc">Replacing a tenured ECS AE costs 6–12 months of recruiting plus 6–12 months of ramp for the replacement. During that 12–24 month window, the account set underperforms — deals are missed, activation stalls, field relationships cool. The loaded replacement cost per senior ECS AE is estimated at $150K–$200K in direct cost, before accounting for the ACV gap during ramp. If the current structure drives 3–5 senior AE exits per year, the ongoing retention cost of creating L7/L8 pays for itself within the first cycle.</div>
+          <div class="math-result amber">3–5 avoided exits/year = $450K–$1M in avoided replacement cost annually</div>
+        </div>
+      </div>
+      <div class="math-step">
+        <div class="math-num">3</div>
+        <div class="math-body">
+          <div class="math-title">Lever 3: ACV Engineering Elimination</div>
+          <div class="math-desc">Every split order form is a Deal Desk touch, a legal review, and a renewal complexity event. The Deal Desk time alone on ACV-engineered deals represents a measurable drag on deal ops capacity. Beyond the internal cost, the field trust damage from split orders creates a collaboration deficit that costs ECS deal flow — Core AEs route around ECS on accounts where they've seen engineering behavior. Raising the ceiling to eliminate this behavior pays back in Deal Desk efficiency, field collaboration, and deal quality.</div>
+          <div class="math-result green">Cleaner deals · Less Deal Desk load · Stronger field partnership = higher ACV per AE</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px">
+      <div class="table-wrap">
+        <table class="sf">
+          <thead>
+            <tr>
+              <th>Initiative</th>
+              <th>Investment Required</th>
+              <th>Return Driver</th>
+              <th>Decision Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-strong">L7 grade creation</td>
+              <td>HR/comp committee approval · ~15–20% OTE increase for eligible AEs</td>
+              <td>Retention of top-performing AEs with 2–4 yr account tenure</td>
+              <td>SVP ECS → CHRO / Comp Committee</td>
+            </tr>
+            <tr>
+              <td class="td-strong">L8 grade creation</td>
+              <td>HR/comp committee approval · ~30–40% OTE increase + RSU eligibility</td>
+              <td>Account Intelligence function · Consumption activation ownership · Exec QBR presence</td>
+              <td>SVP ECS → CHRO / Comp Committee</td>
+            </tr>
+            <tr>
+              <td class="td-strong">Deal ceiling expansion ($350K / tiered to $500K)</td>
+              <td>Deal Desk policy update · Sales ops quota model adjustment</td>
+              <td>Elimination of ACV Engineering · Stronger field trust · Higher ACV per deal</td>
+              <td>SVP ECS + Deal Desk + Finance</td>
+            </tr>
+            <tr>
+              <td class="td-strong">Consumption activation comp model</td>
+              <td>Finance + comp team to model activation bonus structure</td>
+              <td>Agentforce / Data Cloud NRR protection · New consumption ACV line</td>
+              <td>SVP ECS + Finance + Comp</td>
+            </tr>
+            <tr>
+              <td class="td-strong">AER motion + new measurement framework</td>
+              <td>CRM/quota model changes · New KPI dashboards</td>
+              <td>ECS aligned to NRR — the metric that moves the stock price</td>
+              <td>ECS Strategy + Sales Ops</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total</td>
+              <td>Comp committee decision + operational changes</td>
+              <td class="td-green">Retention + Activation ACV + Deal quality + Field collaboration</td>
+              <td>ECS Leadership → Alyssa Melé → CHRO</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ ROADMAP ══════════════════ -->
+<section class="section section-alt" id="roadmap">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Part 6 · Implementation Roadmap</div>
+      <div class="section-divider"></div>
+      <h2>From Position Paper to ECS 2.0 Launch</h2>
+      <p>Four phases. The critical path is the business case reaching the right desk at the right time — FY28 planning cycles begin in Q3 FY27.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px">
+      <div>
+        <div class="eyebrow" style="margin-bottom:16px">Immediate Actions — Now</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot now"></div>
+            <div class="tl-date">July 2026 · Now</div>
+            <div class="tl-action">Formalize the AER Motion Definition</div>
+            <div class="tl-detail">Define exactly what counts as Activate, Expand, and Retain. What CRM fields capture it. How each is measured and quoted. This becomes the new ECS playbook foundation.</div>
+            <div class="tl-tag now">● In progress</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot now"></div>
+            <div class="tl-date">July–August 2026</div>
+            <div class="tl-action">Pull the Activation Gap Data</div>
+            <div class="tl-detail">Quantify the unactivated Agentforce and Data Cloud credits across ECS accounts. This number is the anchor of the business case. Without it, the conversation stays conceptual.</div>
+            <div class="tl-tag now">● Critical path</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">August 2026</div>
+            <div class="tl-action">Draft L7 / L8 Role Profiles</div>
+            <div class="tl-detail">Specific expectations, compensation model, deal parameters, eligibility criteria. Gives HR/comp committee something to react to rather than an abstract concept.</div>
+            <div class="tl-tag next">→ Next</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">August–September 2026</div>
+            <div class="tl-action">Write the Position Paper</div>
+            <div class="tl-detail">4–6 page formal business case framed as a revenue transformation. Diagnosis → proposed model → financial impact → comp ask → implementation plan. This is what moves a comp committee.</div>
+            <div class="tl-tag next">→ Next</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow" style="margin-bottom:16px">Planning &amp; Launch — FY28</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">Q3 FY27 · September 2026</div>
+            <div class="tl-action">Submit to ECS SVP → COO</div>
+            <div class="tl-detail">Business case reaches ECS leadership → Alyssa Melé before FY28 planning cycles lock. This is the window. FY28 plan structure decisions happen in Q3/Q4 FY27.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">Q4 FY27 · October–November 2026</div>
+            <div class="tl-action">HR / Comp Committee Review</div>
+            <div class="tl-detail">L7/L8 grade creation, deal ceiling expansion, and consumption compensation model reviewed against FY28 quota design. AER metrics incorporated into quota build.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">FY28 Kickoff</div>
+            <div class="tl-action">ECS 2.0 Pilot Launch — REG Vertical</div>
+            <div class="tl-detail">Launch AER motion and L7/L8 track in REG ECS first. REG has the account complexity (HLS, FINS), the consumption opportunity (Agentforce for Healthcare), and the leadership alignment to run a clean pilot.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">Mid-FY28</div>
+            <div class="tl-action">AMER ECS Rollout</div>
+            <div class="tl-detail">Scale AER motion, L7/L8 track, and activation compensation model to TMT, CBS, and PACE based on REG pilot data. Full AMER ECS 2.0 operating model in place.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pullout" style="margin-top:40px">
+      The FY28 planning window opens in Q3 FY27. Every week of delay past September reduces the probability of L7/L8 and the new compensation model making it into FY28 quota design. The business case needs to reach the SVP level by end of August.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="eyebrow" style="color:var(--sf-blue-light); margin-bottom:8px">The Strategic Window Is Open</div>
+      <h2>ECS 2.0 Is Not a Talent Ask.<br>It Is a Revenue Transformation.</h2>
+      <p>The deal band expansion, the consumption economy shift, and the Agentforce GTM motion have created a unique moment to restructure ECS as Salesforce's Revenue Activation Force. The business case writes itself — if leadership is willing to act on it before FY28 planning closes.</p>
+      <div class="cta-actions">
+        <a href="#diagnosis" class="btn btn-primary">Review the Diagnosis</a>
+        <a href="#case" class="btn btn-ghost">See the Business Case</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p>ECS 2.0 Strategic Readout &nbsp;·&nbsp; AMER Enterprise Corporate Sales &nbsp;·&nbsp; July 2026</p>
+      <p>Prepared for ECS &amp; Regulated Industry Leadership</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const btn = document.getElementById('mobileMenuBtn');
+  const menu = document.getElementById('mobileNavMenu');
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+  });
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+    });
+  });
+
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.nav-links a, #mobileNavMenu a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + id
+            ? 'var(--sf-white)'
+            : 'rgba(255,255,255,.7)';
+          a.style.fontWeight = a.getAttribute('href') === '#' + id ? '700' : '500';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
