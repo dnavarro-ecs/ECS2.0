@@ -53,22 +53,53 @@
       line-height: 1.6;
     }
 
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--sf-navy);
-      padding: 0 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    /* ── SIDEBAR NAV ── */
+    .page-layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 220px; flex-shrink: 0; background: var(--sf-navy);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      display: flex; flex-direction: column; z-index: 100;
+      border-right: 1px solid rgba(255,255,255,0.07);
     }
-    .nav-brand { display: flex; align-items: center; gap: 16px; }
-    .nav-brand svg { height: 28px; width: auto; }
-    .nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,.25); }
-    .nav-brand-text { color: var(--sf-white); font-size: 14px; font-weight: 600; letter-spacing: .02em; }
-    .nav-links { display: flex; gap: 24px; }
-    .nav-links a { color: rgba(255,255,255,.8); text-decoration: none; font-size: 13px; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--sf-white); }
+    .sidebar-brand {
+      padding: 22px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: flex-start; gap: 10px; flex-direction: column;
+    }
+    .sidebar-brand svg { height: 22px; width: auto; }
+    .sidebar-brand-text { color: rgba(255,255,255,.55); font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .sidebar-brand-title { color: var(--sf-white); font-size: 12px; font-weight: 700; line-height: 1.35; }
+    .sidebar-nav { flex: 1; padding: 10px 0; }
+    .sidebar-section-label {
+      font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28); padding: 14px 18px 5px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 9px; padding: 9px 18px;
+      color: rgba(255,255,255,.5); text-decoration: none; font-size: 12.5px; font-weight: 500;
+      transition: color .15s, background .15s; border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: rgba(255,255,255,.88); background: rgba(255,255,255,.05); }
+    .sidebar-link.active { color: var(--sf-white); font-weight: 700; border-left-color: var(--sf-blue); background: rgba(5,106,254,.15); }
+    .sidebar-link-num {
+      width: 17px; height: 17px; border-radius: 50%; background: rgba(255,255,255,.08);
+      font-size: 9px; font-weight: 800; color: rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sidebar-link.active .sidebar-link-num { background: var(--sf-blue); color: white; }
+    .sidebar-footer { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,.07); }
+    .sidebar-footer p { font-size: 10px; color: rgba(255,255,255,.25); line-height: 1.5; }
+    .main-content { flex: 1; min-width: 0; }
+
+    /* ── MOBILE TOPNAV (shown only on mobile, sidebar hidden) ── */
+    .mobile-topnav {
+      display: none; position: sticky; top: 0; z-index: 100;
+      background: var(--sf-navy); padding: 0 20px; height: 56px;
+      align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,.35);
+    }
+    .mobile-topnav-brand { display: flex; align-items: center; gap: 10px; }
+    .mobile-topnav-brand svg { height: 22px; }
+    .mobile-topnav-brand span { color: white; font-size: 13px; font-weight: 700; }
     .mobile-menu-btn { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
     .mobile-menu-btn span { width: 22px; height: 2px; background: white; border-radius: 2px; display: block; transition: transform .25s, opacity .25s; }
     #mobileNavMenu { display: none; }
@@ -82,7 +113,7 @@
     .section-divider { width: 48px; height: 4px; border-radius: 2px; background: var(--sf-blue); margin: 0 auto 24px; }
     .section-header { text-align: center; max-width: 720px; margin: 0 auto 56px; }
     .section-header h2 { font-size: clamp(28px,3vw,40px); font-weight: 800; color: var(--sf-navy); margin: 8px 0 16px; }
-    .section-header p { font-size: 17px; color: var(--sf-neutral-80); }
+    .section-header p { font-size: 17px; color: #475569; line-height: 1.7; }
 
     /* ── HERO ── */
     .hero {
@@ -110,7 +141,7 @@
     .scorecard-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 20px; }
     .scorecard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .scorecard-item { text-align: center; background: rgba(255,255,255,.07); border-radius: var(--radius-md); padding: 16px 8px; }
-    .scorecard-num { font-size: 28px; font-weight: 900; color: var(--sf-white); line-height: 1; }
+    .scorecard-num { font-size: clamp(28px,3vw,38px); font-weight: 900; color: var(--sf-white); line-height: 1; letter-spacing: -.02em; }
     .scorecard-num span { font-size: 16px; font-weight: 700; color: var(--sf-blue-light); }
     .scorecard-label { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; line-height: 1.3; }
     .scorecard-divider { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.1); margin: 4px 0; }
@@ -139,8 +170,8 @@
     .card-icon.amber { background: #FEFCBF; }
     .card-icon.red { background: #FED7D7; }
     .card h3 { font-size: 16px; font-weight: 700; color: var(--sf-navy); margin-bottom: 8px; }
-    .card p { font-size: 13px; color: var(--sf-neutral-80); line-height: 1.6; }
-    .stat-callout { font-size: 36px; font-weight: 900; color: var(--sf-blue); line-height: 1; margin-bottom: 4px; }
+    .card p { font-size: 13px; color: #475569; line-height: 1.7; }
+    .stat-callout { font-size: clamp(40px,4.5vw,56px); font-weight: 900; color: var(--sf-blue); line-height: 1; margin-bottom: 6px; letter-spacing: -.03em; }
     .stat-callout.red { color: var(--sf-red); }
     .stat-callout.amber { color: var(--sf-amber); }
     .stat-callout.green { color: var(--sf-green); }
@@ -150,7 +181,7 @@
     .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 40px; }
     .stat-block { background: var(--sf-sky); border-radius: var(--radius-md); padding: 24px 16px; text-align: center; }
     .stat-block.accent { background: var(--sf-navy); }
-    .stat-big { font-size: 32px; font-weight: 900; color: var(--sf-navy); line-height: 1; }
+    .stat-big { font-size: clamp(32px,3.5vw,44px); font-weight: 900; color: var(--sf-navy); line-height: 1; letter-spacing: -.02em; }
     .stat-big.white { color: var(--sf-white); }
     .stat-lbl { font-size: 11px; color: var(--sf-neutral-60); margin-top: 6px; line-height: 1.3; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
     .stat-lbl.white { color: rgba(255,255,255,.7); }
@@ -297,7 +328,20 @@
     .compare-col.old .compare-text { color: var(--sf-neutral-80); }
     .compare-col.new .compare-text { color: rgba(255,255,255,.85); }
 
+    /* ── SCROLLYTELLING ── */
+    .scrolly-layout { display: grid; grid-template-columns: 280px 1fr; gap: 52px; align-items: start; margin-bottom: 48px; }
+    .scrolly-left { position: sticky; top: 40px; }
+    .scrolly-left .eyebrow { margin-bottom: 10px; }
+    .scrolly-left .section-divider { margin: 10px 0 18px; }
+    .scrolly-left h2 { font-size: clamp(22px,2.2vw,30px); font-weight: 800; color: var(--sf-navy); margin: 0 0 16px; }
+    .scrolly-left p { font-size: 15px; color: #475569; line-height: 1.7; }
+    .scrolly-right { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-content: start; }
+    .scrolly-right .card-span { grid-column: 1 / -1; }
+
     /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .sidebar { width: 190px; }
+    }
     @media (max-width: 900px) {
       .hero-grid, .three-col, .aer-grid, .compare-wrap { grid-template-columns: 1fr; }
       .two-col { grid-template-columns: 1fr; }
@@ -305,53 +349,80 @@
       .track-level { border-right: none; border-bottom: 1px solid rgba(255,255,255,.2); }
       .track-arrow { display: none; }
       .stat-grid { grid-template-columns: 1fr 1fr; }
-      nav { padding: 0 20px; }
       .container { padding: 0 20px; }
+      .scrolly-layout { grid-template-columns: 1fr; }
+      .scrolly-left { position: static; }
     }
-    /* Nav collapses to hamburger only on mobile */
     @media (max-width: 768px) {
-      .nav-links { display: none; }
+      .sidebar { display: none; }
+      .mobile-topnav { display: flex; }
       .mobile-menu-btn { display: flex !important; }
-      #mobileNavMenu { display: block !important; position: fixed; top: 60px; left: 0; right: 0; background: var(--sf-navy); z-index: 99; padding: 8px 0 12px; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: transform .2s, opacity .2s; border-top: 1px solid rgba(255,255,255,.12); }
+      #mobileNavMenu { display: block !important; position: fixed; top: 56px; left: 0; right: 0; background: var(--sf-navy); z-index: 99; padding: 8px 0 12px; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: transform .2s, opacity .2s; border-top: 1px solid rgba(255,255,255,.12); }
       #mobileNavMenu.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
       #mobileNavMenu a { display: block; padding: 14px 24px; color: rgba(255,255,255,.9); text-decoration: none; font-size: 15px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.08); }
-      body { padding-top: 0; }
-    }
-    /* Compact nav links for mid-range viewports */
-    @media (min-width: 769px) and (max-width: 1000px) {
-      .nav-links { gap: 14px; }
-      .nav-links a { font-size: 11.5px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════ NAV ══════════════════ -->
-<nav>
-  <div class="nav-brand">
-    <!-- Salesforce cloud logo -->
+<!-- ══════════════════ PAGE LAYOUT ══════════════════ -->
+<div class="page-layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
     <svg viewBox="0 0 60 42" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M25.1 7.8c2.4-2.5 5.7-4 9.3-4 4.8 0 9 2.6 11.3 6.5.9-.4 1.8-.6 2.8-.6 3.9 0 7 3.2 7 7.1 0 3.9-3.1 7.1-7 7.1H11.5C7.3 23.9 4 20.6 4 16.4c0-4.2 3.3-7.5 7.5-7.5.5 0 1 .1 1.5.2C14.6 5.6 18.7 3 23.4 3c.6 0 1.2 0 1.7.1z" fill="#FFFFFF"/>
     </svg>
-    <div class="nav-divider"></div>
-    <span class="nav-brand-text">ECS</span>
-    <div class="nav-divider"></div>
-    <span class="nav-brand-text">ECS 2.0 Strategic Readout</span>
+    <div>
+      <div class="sidebar-brand-text">AMER ECS &nbsp;·&nbsp; FY27</div>
+      <div class="sidebar-brand-title">ECS 2.0<br>Strategic Readout</div>
+    </div>
   </div>
-  <div class="nav-links">
-    <a href="#brief">Brief</a>
-    <a href="#diagnosis">Diagnosis</a>
-    <a href="#model">AER Model</a>
-    <a href="#career">Career Track</a>
-    <a href="#dealband">Deal Band</a>
-    <a href="#case">Business Case</a>
-    <a href="#redteam">Red Team</a>
-    <a href="#roadmap">Roadmap</a>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Contents</div>
+    <a href="#brief" class="sidebar-link active">
+      <span class="sidebar-link-num">0</span>Brief
+    </a>
+    <a href="#diagnosis" class="sidebar-link">
+      <span class="sidebar-link-num">1</span>Diagnosis
+    </a>
+    <a href="#model" class="sidebar-link">
+      <span class="sidebar-link-num">2</span>AER Model
+    </a>
+    <a href="#career" class="sidebar-link">
+      <span class="sidebar-link-num">3</span>Career Track
+    </a>
+    <a href="#dealband" class="sidebar-link">
+      <span class="sidebar-link-num">4</span>Deal Band
+    </a>
+    <a href="#case" class="sidebar-link">
+      <span class="sidebar-link-num">5</span>Business Case
+    </a>
+    <a href="#roadmap" class="sidebar-link">
+      <span class="sidebar-link-num">6</span>Roadmap
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <p>ECS 2.0 Strategic Readout<br>July 2026 &nbsp;·&nbsp; AMER Enterprise</p>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- Mobile topnav (visible only on small screens) -->
+<header class="mobile-topnav" id="mobileTopnav">
+  <div class="mobile-topnav-brand">
+    <svg viewBox="0 0 60 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25.1 7.8c2.4-2.5 5.7-4 9.3-4 4.8 0 9 2.6 11.3 6.5.9-.4 1.8-.6 2.8-.6 3.9 0 7 3.2 7 7.1 0 3.9-3.1 7.1-7 7.1H11.5C7.3 23.9 4 20.6 4 16.4c0-4.2 3.3-7.5 7.5-7.5.5 0 1 .1 1.5.2C14.6 5.6 18.7 3 23.4 3c.6 0 1.2 0 1.7.1z" fill="#FFFFFF"/>
+    </svg>
+    <span>ECS 2.0 Strategic Readout</span>
   </div>
   <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
-</nav>
+</header>
 <div id="mobileNavMenu">
   <a href="#brief">Brief</a>
   <a href="#diagnosis">Diagnosis</a>
@@ -359,7 +430,6 @@
   <a href="#career">Career Track</a>
   <a href="#dealband">Deal Band</a>
   <a href="#case">Business Case</a>
-  <a href="#redteam">Red Team</a>
   <a href="#roadmap">Roadmap</a>
 </div>
 
@@ -836,33 +906,33 @@
     <div class="section-header">
       <div class="eyebrow">Part 4 · The Commercial Reality Gap</div>
       <div class="section-divider"></div>
-      <h2>ECS Is Selling Into a $280K Market With a $150K Ceiling</h2>
-      <p>The ceiling was set when subsidiary deals were $50K–$150K. The product has changed. Agentforce, Data Cloud, and multi-cloud deals routinely run past $150K. ECS is structurally capped on revenue it already has access to.</p>
+      <h2>Enterprise Transactional Business Has No Owner — ECS Is Working It Through Workarounds</h2>
+      <p>When Enterprise accounts run Agentforce activations, expand Data Cloud, or upgrade subsidiary platforms, the natural order size clusters between $150K and $280K. Not a strategic transformation. Not a Core deal. Just the transactional volume that flows from a mature Enterprise relationship. That business has no clean structural home today — and ECS is already working it through split orders, ramps, and Deal Desk engineering.</p>
     </div>
 
     <div class="math-steps">
       <div class="math-step">
         <div class="math-num">1</div>
         <div class="math-body">
-          <div class="math-title">What ECS Accounts Contain Today</div>
-          <div class="math-desc">ECS AEs manage subsidiary relationships, consumption expansions, and multi-cloud activations inside Enterprise accounts. These are structurally larger than the BCO deals the ceiling was designed for.</div>
-          <div class="math-result">Multi-product, multi-cloud — the opportunity has grown</div>
+          <div class="math-title">The Volume Math That Nobody Discusses</div>
+          <div class="math-desc">An ECS AE carrying a $1M–$2M annual quota cannot close their number on deals averaging sub-$150K. The subsidiary account base doesn't produce enough deal volume to support it. This isn't a performance problem — it's an arithmetic problem. The architecture was never calibrated to make the quota math work, and the field has been absorbing that gap quietly for years.</div>
+          <div class="math-result red">Sub-$150K deal size · Quota math that doesn't close · Field absorbing the gap silently</div>
         </div>
       </div>
       <div class="math-step">
         <div class="math-num">2</div>
         <div class="math-body">
-          <div class="math-title">Where the Commercial Center of Gravity Sits</div>
-          <div class="math-desc">The natural commercial range for an ECS deal in FY27 clusters between $150K and $350K. The $150K ceiling doesn't sit below that range — it sits at the floor. ECS is operating in the middle of its market with a ceiling at the entry point.</div>
-          <div class="math-result red">$150K ceiling · $150K–$350K natural deal range · Structural mismatch</div>
+          <div class="math-title">Where Enterprise Transactional Business Actually Lives</div>
+          <div class="math-desc">Agentforce activations, consumption expansions, and subsidiary platform upgrades for Enterprise accounts naturally produce orders in the $150K–$280K range. This isn't a big deal — it's routine transactional business. It doesn't require Core. It doesn't require a strategic transformation motion. It requires the AE who already owns the relationship and knows what the account has bought. That's ECS. There is no structural reason for this business to flow anywhere else.</div>
+          <div class="math-result">$150K–$280K transactional Enterprise business · Relationship already owned by ECS · No clean structural home</div>
         </div>
       </div>
       <div class="math-step">
         <div class="math-num">3</div>
         <div class="math-body">
-          <div class="math-title">What $350K Unlocks</div>
-          <div class="math-desc">$350K reflects what Enterprise subsidiary accounts contain in FY27 — not an aggressive number, just an accurate one. Deals above $350K belong with Core AEs. That escalation is correct. The architecture creates clean ownership at every level.</div>
-          <div class="math-result green">Ceiling matches market · Clean escalation above $350K · Right AE owns the right deal</div>
+          <div class="math-title">The Workaround Culture Is the Evidence</div>
+          <div class="math-desc">Split orders across fiscal periods. Activation phases spread across quarters. Single-product line items that should be one order routed as multiples through Deal Desk. These aren't creative deal structures — they're symptoms. ECS AEs are engineering ACV to fit a ceiling that doesn't match the market. Each workaround generates 2–3 Deal Desk touches, a legal review, and a renewal complexity event. Core AEs have noticed the pattern and route around ECS on accounts where they've seen it. The workaround culture doesn't go away until the architecture changes.</div>
+          <div class="math-result red">Split orders · Deal Desk friction · Renewal complexity · Core routing around ECS on contested accounts</div>
         </div>
       </div>
     </div>
@@ -873,41 +943,41 @@
           <thead>
             <tr>
               <th>Deal Type</th>
-              <th>Natural Commercial Range (FY27)</th>
-              <th>Current Ceiling</th>
-              <th>Gap</th>
+              <th>Natural Order Size</th>
+              <th>What ECS Does Today</th>
+              <th>Cost of the Workaround</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="td-strong">Agentforce activation + Data Cloud starter</td>
-              <td>$175K – $275K</td>
-              <td class="td-red">$150K</td>
-              <td class="td-red">Up to $125K per deal left on the table</td>
+              <td>$175K – $280K</td>
+              <td class="td-amber">Split across two fiscal periods</td>
+              <td class="td-red">2–3 Deal Desk touches · Attribution friction on renewal</td>
             </tr>
             <tr>
-              <td class="td-strong">Multi-cloud consumption expansion</td>
-              <td>$250K – $350K</td>
-              <td class="td-red">$150K</td>
-              <td class="td-red">Up to $200K per deal left on the table</td>
+              <td class="td-strong">Consumption expansion (multi-cloud)</td>
+              <td>$180K – $280K</td>
+              <td class="td-amber">Activation phased across quarters</td>
+              <td class="td-red">Renewal complexity · NRR harder to track cleanly</td>
             </tr>
             <tr>
               <td class="td-strong">Subsidiary platform upgrade + renewal uplift</td>
-              <td>$200K – $320K</td>
-              <td class="td-red">$150K</td>
-              <td class="td-red">Up to $170K per deal left on the table</td>
+              <td>$150K – $260K</td>
+              <td class="td-amber">Single order ceiling-engineered</td>
+              <td class="td-red">Deal Desk review · Potential Core conflict on attribution</td>
             </tr>
             <tr>
               <td class="td-strong">Strategic transformation (Core-led)</td>
               <td>$400K+</td>
-              <td>Escalation to Core — correct model</td>
-              <td class="td-green">No gap — this is right</td>
+              <td class="td-green">Escalation to Core — correct model</td>
+              <td class="td-green">No friction — this works</td>
             </tr>
             <tr class="total-row">
               <td>Net Position</td>
-              <td>ECS commercial opportunity has grown with the product</td>
-              <td class="td-red">Ceiling set for FY22 deal sizes</td>
-              <td class="td-blue">$350K ceiling closes the gap</td>
+              <td>$150K–$280K transactional segment sits in a structural gap</td>
+              <td class="td-red">Workaround culture is the current answer</td>
+              <td class="td-blue">Structural ownership eliminates the friction</td>
             </tr>
           </tbody>
         </table>
@@ -916,19 +986,19 @@
 
     <div class="three-col" style="margin-top:8px">
       <div class="accent-card red">
-        <h3>The Ceiling Was Set for a Different Product</h3>
-        <p>The $150K ceiling was right for BCO and license expansion. Agentforce, Data Cloud, and multi-cloud weren't the primary motion yet. The ceiling made sense. The product changed.</p>
+        <h3>The Quota Math Has Never Worked at Sub-$150K</h3>
+        <p>ECS AEs can't close $1M+ annual quotas on a diet of sub-$150K deals. The account base doesn't produce enough volume. This has been true for years. The field knows it. The architecture hasn't responded to it.</p>
       </div>
       <div class="accent-card amber">
-        <h3>$350K Is the Baseline, Not a Stretch Goal</h3>
-        <p>ECS subsidiary deals cluster between $150K and $350K. That makes $150K the floor, not the ceiling. $350K isn't aggressive — it's the commercial reality.</p>
+        <h3>$150K–$280K Is Transactional, Not Strategic</h3>
+        <p>Deals in this range aren't complex enough to require Core. They're the natural output of a healthy ECS relationship doing its job. They belong with the AE who owns the account — not in a structural gray zone where workarounds are required to get them closed.</p>
       </div>
       <div class="accent-card green">
-        <h3>Ceiling + Grade Architecture = Clean Ownership</h3>
-        <p>As AEs grow into L7 and L8, their ceiling grows with them. L7 owns up to $350K. L8 up to $500K+. Clean escalation to Core above that — no contested hand-offs.</p>
+        <h3>Structural Ownership Ends the Workaround Culture</h3>
+        <p>When transactional Enterprise business has a defined home, split orders stop. Deal Desk load drops. Core AEs stop routing around ECS on accounts where they've seen ceiling-engineering. Clean ownership is a field partnership unlock — not just a comp plan adjustment.</p>
       </div>
     </div>
-    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;max-width:760px;margin:48px auto 0;text-align:center">Three changes: a new motion, a new career track, a new deal ceiling. The financial case for all three runs through the same question. Part 5 quantifies what inaction costs — and what a structured activation model returns.</p>
+    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;max-width:760px;margin:48px auto 0;text-align:center">The workaround culture has a dollar figure attached to it. Every split order, every Deal Desk routing, every artificially-phased activation carries a cost — in time, in renewal complexity, and in field relationships. Part 5 puts a number on it.</p>
   </div>
 </section>
 
@@ -1021,56 +1091,7 @@
         </table>
       </div>
     </div>
-    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;max-width:760px;margin:48px auto 0;text-align:center">The numbers hold. But a proposal that only works in a spreadsheet isn't ready for a comp committee. Part 6 answers the five objections a skeptical SVP will raise — before they raise them.</p>
-  </div>
-</section>
-
-<!-- ══════════════════ RED TEAM ══════════════════ -->
-<section class="section" id="redteam">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">Part 6 · Honest Pressure-Testing</div>
-      <div class="section-divider"></div>
-      <h2>What This Model Has to Earn</h2>
-      <p>Every structural change has landmines. These are the five most likely objections — and the response to each. A proposal that can't answer these isn't ready for a comp committee.</p>
-    </div>
-    <div class="two-col">
-      <div class="card">
-        <div class="card-icon amber">⚠️</div>
-        <h3>Risk: Activation focus dilutes in-quarter ACV creation</h3>
-        <p>If AEs are chasing activation bonuses, Create &amp; Close velocity may dip during the transition. This is the most credible objection a sales leader will raise.</p>
-        <div style="margin-top:16px;padding:14px 16px;background:var(--sf-sky);border-radius:8px;font-size:13px;color:var(--sf-navy)"><strong>Response:</strong> AER is structured so Expand (BCO ACV) remains the primary attainment metric. Activation and Retain are additive comp levers — they can't replace quota attainment, only supplement it. The pilot phase tracks both in parallel to catch any regression early.</div>
-      </div>
-      <div class="card">
-        <div class="card-icon amber">⚠️</div>
-        <h3>Risk: L7/L8 grades set a precedent across all AE orgs</h3>
-        <p>The comp committee's first concern will be: if ECS gets L7/L8, every segment will ask for it. Grade creation has org-wide implications.</p>
-        <div style="margin-top:16px;padding:14px 16px;background:var(--sf-sky);border-radius:8px;font-size:13px;color:var(--sf-navy)"><strong>Response:</strong> L7/L8 eligibility is gated on ECS-specific criteria: multi-cloud account tenure, activation book ownership, and executive engagement requirements. These are not portable to other AE orgs without the same account model. The job profiles must make this explicit before submission.</div>
-      </div>
-      <div class="card">
-        <div class="card-icon amber">⚠️</div>
-        <h3>Risk: A more empowered ECS encroaches on Core AE territory</h3>
-        <p>Higher deal ceilings and a broader motion could be perceived by Core AEs as competitive — creating the exact friction this model is meant to eliminate.</p>
-        <div style="margin-top:16px;padding:14px 16px;background:var(--sf-sky);border-radius:8px;font-size:13px;color:var(--sf-navy)"><strong>Response:</strong> The ceiling expansion applies to deals ECS already owns — it doesn't change account assignment. The Retain motion is explicitly collaborative: ECS flags at-risk accounts to Core, not around them. Rules of engagement need to be written before launch.</div>
-      </div>
-      <div class="card">
-        <div class="card-icon amber">⚠️</div>
-        <h3>Risk: Activation metrics don't exist in CRM today</h3>
-        <p>The Activation Book concept requires infrastructure — credit burn tracking, deployment milestones, attribution logic — that Sales Ops would need to build. This is non-trivial.</p>
-        <div style="margin-top:16px;padding:14px 16px;background:var(--sf-sky);border-radius:8px;font-size:13px;color:var(--sf-navy)"><strong>Response:</strong> This is a real dependency and a real timeline risk. The roadmap accounts for it: the Activation Book dashboard is a Q4 FY27 deliverable, and the pilot doesn't launch until the measurement infrastructure is in place. Rushing this creates the wrong incentive.</div>
-      </div>
-      <div class="card">
-        <div class="card-icon amber">⚠️</div>
-        <h3>Risk: Digital already exists for consumption activation — why AER?</h3>
-        <p>Reid runs both ECS and Digital. Stephen Harrison's Digital org was explicitly designed for consumption-based revenue motions. A comp committee will ask: isn't this what Digital is for?</p>
-        <div style="margin-top:16px;padding:14px 16px;background:var(--sf-sky);border-radius:8px;font-size:13px;color:var(--sf-navy)"><strong>Response:</strong> Digital AEs don't have day-to-day presence inside Enterprise subsidiaries. AER works because ECS is already in the room — an elevation of existing coverage, not a new overlay. Digital and AER interlock. That's the design.</div>
-      </div>
-    </div>
-    <div style="margin-top:32px;padding:28px 32px;background:var(--sf-navy);border-radius:14px">
-      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sf-blue-light);margin-bottom:12px">The Honest Summary</div>
-      <div style="font-size:16px;color:rgba(255,255,255,.9);line-height:1.7">This model works if two things are true: ECS AEs can hold both a transactional and a consultative motion simultaneously, and Salesforce's ops infrastructure can measure activation in a way that's clean enough to compensate against. Both are answerable — but they have to be answered before the comp committee meeting, not after it.</div>
-    </div>
-    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;max-width:760px;margin:48px auto 0;text-align:center">The model is sound. The window is specific. Part 7 maps the path from this conversation to an approved ECS 2.0 — and the single deadline that determines whether this is FY28 or FY29.</p>
+    <p style="font-size:17px;color:var(--sf-neutral-80);line-height:1.8;max-width:760px;margin:48px auto 0;text-align:center">The numbers hold. The window is specific. Part 6 maps the path from this conversation to an approved ECS 2.0 — and the single deadline that determines whether this is FY28 or FY29.</p>
   </div>
 </section>
 
@@ -1078,7 +1099,7 @@
 <section class="section section-alt" id="roadmap">
   <div class="container">
     <div class="section-header">
-      <div class="eyebrow">Part 7 · Implementation Roadmap</div>
+      <div class="eyebrow">Part 6 · Implementation Roadmap</div>
       <div class="section-divider"></div>
       <h2>From Position Paper to ECS 2.0 Launch</h2>
       <p>Four phases. The critical path is the business case reaching the right desk at the right time — FY28 planning cycles begin in Q3 FY27.</p>
@@ -1182,38 +1203,44 @@
 </footer>
 
 <script>
-  // Mobile menu
+  // Mobile menu toggle
   const btn = document.getElementById('mobileMenuBtn');
   const menu = document.getElementById('mobileNavMenu');
-  btn.addEventListener('click', () => {
+  if (btn) btn.addEventListener('click', () => {
     const open = menu.classList.toggle('open');
     btn.classList.toggle('open', open);
   });
-  menu.querySelectorAll('a').forEach(a => {
+  if (menu) menu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       menu.classList.remove('open');
-      btn.classList.remove('open');
+      if (btn) btn.classList.remove('open');
     });
   });
 
-  // Active nav highlight on scroll
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const navLinks = document.querySelectorAll('.nav-links a, #mobileNavMenu a');
+  // Active state: sidebar links + mobile menu links
+  const sections = document.querySelectorAll('section[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  const mobileLinks = document.querySelectorAll('#mobileNavMenu a');
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.id;
-        navLinks.forEach(a => {
-          a.style.color = a.getAttribute('href') === '#' + id
-            ? 'var(--sf-white)'
-            : 'rgba(255,255,255,.7)';
-          a.style.fontWeight = a.getAttribute('href') === '#' + id ? '700' : '500';
+        sidebarLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+        mobileLinks.forEach(a => {
+          const active = a.getAttribute('href') === '#' + id;
+          a.style.color = active ? 'var(--sf-white)' : 'rgba(255,255,255,.75)';
+          a.style.fontWeight = active ? '700' : '500';
         });
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.25 });
   sections.forEach(s => observer.observe(s));
 </script>
 
+</div><!-- /main-content -->
+</div><!-- /page-layout -->
 </body>
 </html>
